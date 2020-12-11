@@ -1,18 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Chart from 'chart.js';
 
-type WeatherComponentProps = {
-  weatherData: {},
+type Weather5DayForecast3HRData = {
+  list: Array<{ dt_txt: string, main: { temp: number } }>,
 }
 
-const WeatherComponent = ({ weatherData } : WeatherComponentProps) => (
-  <div>
-    <h2>Data:</h2>
+type WeatherComponentProps = {
+  weatherData: Weather5DayForecast3HRData,
+}
+
+const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
+  useEffect(() => {
+    const ctx = document.getElementById("5DayForecast3HRData");
+    // @ts-ignore
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: weatherData.list.map(n => n.dt_txt),
+        datasets: [
+          {
+            label: "Temperature in Fahrenheit",
+            data: weatherData.list.map(n => n.main.temp),
+            backgroundColor: "#a0c1b9",
+            fill: false,
+            borderWidth: 3,
+          }
+        ]
+      }
+    });
+  });
+  return (
     <div>
-      <code style={{ fontSize: 'small', wordBreak: 'break-word' }}>{JSON.stringify(weatherData)}</code>
+      <canvas id="5DayForecast3HRData" width="400" height="200" />
+      <h2>Data:</h2>
+      <div>
+        <code style={{ fontSize: 'small', wordBreak: 'break-word' }}>{JSON.stringify(weatherData)}</code>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 enum LoadingStatuses {
   initial = 'initial',
@@ -36,10 +63,11 @@ export const assertUnreachable = (x: never) => null;
 
 const DisplayWeatherWrapper = () => {
   const [pageStatus, setStatus] = useState<LoadingStates>(LoadingStatuses.initial);
-  const [weatherData, fetchWeatherData] = useState<Array<{}>>([]);
+  //@ts-ignore
+  const [weatherData, fetchWeatherData] = useState<WeatherComponentProps>({});
   useEffect(() => {
     setStatus(LoadingStatuses.loading);
-    axios.get(`${OWM_BASE_URL}/forecast?q=New%20York&cnt=3&units=imperial&appid=${OWM_API_KEY}`)
+    axios.get(`${OWM_BASE_URL}/forecast?q=New%20York&units=imperial&appid=${OWM_API_KEY}`)
       .then(res => {
         const data = res.data;
         fetchWeatherData(data)
@@ -59,6 +87,7 @@ const DisplayWeatherWrapper = () => {
   }, []);
   switch (pageStatus) {
     case LoadingStatuses.success:
+      //@ts-ignore
       return (<WeatherComponent weatherData={weatherData} />);
     case LoadingStatuses.initial:
     case LoadingStatuses.loading:
