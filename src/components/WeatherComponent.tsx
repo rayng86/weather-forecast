@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js';
+import dayjs from 'dayjs';
 
 type Weather5DayForecast3HRData = {
   list: Array<{ dt_txt: string, main: { temp: number } }>,
@@ -17,7 +18,7 @@ const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: weatherData.list.map(n => n.dt_txt),
+        labels: weatherData.list.map(n => dayjs(n.dt_txt).format('MM/DD/YY h:mm A')),
         datasets: [
           {
             label: "Temperature in Fahrenheit",
@@ -33,8 +34,9 @@ const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
   return (
     <div>
       <canvas id="5DayForecast3HRData" width="400" height="200" />
+      <h1>{dayjs().format('MM/DD/YY h:mm A')}</h1>
       <h2>Data:</h2>
-      <div>
+      <div style={{ margin: '0 1rem', border: '1px solid #70a0af', overflow: 'hidden', height: '200px', position: 'relative', overflowY: 'scroll' }}>
         <code style={{ fontSize: 'small', wordBreak: 'break-word' }}>{JSON.stringify(weatherData)}</code>
       </div>
     </div>
