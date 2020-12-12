@@ -4,14 +4,21 @@ import Chart from 'chart.js';
 import dayjs from 'dayjs';
 
 type Weather5DayForecast3HRData = {
-  list: Array<{ dt_txt: string, main: { temp: number } }>,
+  list: Array<{ dt: number, dt_txt: string, main: { temp: number } }>,
 }
 
 type WeatherComponentProps = {
+  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData},
+  setCity: Function,
+  city: string,
+  updateCityForecast: any,
+}
+
+type WeatherChartComponentProps = {
   weatherData: Weather5DayForecast3HRData,
 }
 
-const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
+const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => {
   useEffect(() => {
     const ctx = document.getElementById("5DayForecast3HRData");
     // @ts-ignore
@@ -21,7 +28,7 @@ const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
         labels: weatherData.list.map(n => dayjs(n.dt_txt).format('MM/DD/YY h:mm A')),
         datasets: [
           {
-            label: "Temperature in Fahrenheit",
+            label: "Temperature (Fahrenheit)",
             data: weatherData.list.map(n => n.main.temp),
             backgroundColor: "#a0c1b9",
             fill: false,
@@ -32,8 +39,16 @@ const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
     });
   });
   return (
+    <canvas id="5DayForecast3HRData" width="400" height="200" />
+  );
+};
+
+const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
+  return (
     <div>
-      <canvas id="5DayForecast3HRData" width="400" height="200" />
+      <input type='text' value={city} onChange={(x) => setCity(x.target.value)} />
+      <button onClick={updateCityForecast}>Set</button>
+      <WeatherChartComponent weatherData={weatherData.data} />
       <h1>{dayjs().format('MM/DD/YY h:mm A')}</h1>
       <h2>Data:</h2>
       <div style={{ margin: '0 1rem', border: '1px solid #70a0af', overflow: 'hidden', height: '200px', position: 'relative', overflowY: 'scroll' }}>
@@ -43,18 +58,18 @@ const WeatherComponent = ({ weatherData } : WeatherComponentProps) => {
   );
 };
 
-enum LoadingStatuses {
+enum PossibleStates {
   initial = 'initial',
   loading = 'loading',
   success = 'success',
   error = 'error',
 }
 
-type LoadingStates =
-  | LoadingStatuses.initial
-  | LoadingStatuses.loading
-  | LoadingStatuses.success
-  | LoadingStatuses.error
+type State =
+| { kind: PossibleStates.initial, }
+| { kind: PossibleStates.loading, }
+| { kind: PossibleStates.error, errorObject: any }
+| { kind: PossibleStates.success, data: any }
 
 const OWM_BASE_URL = 'https://api.openweathermap.org/data/2.5/';
 const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
@@ -63,41 +78,53 @@ const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
 // https://dev.to/ddiprose/exhaustive-switch-statement-with-typescript-26dh
 export const assertUnreachable = (x: never) => null;
 
+const get5DayForecast3HRWeatherData = (city: string, setCurrentState: Function) => {
+  setCurrentState({ kind: PossibleStates.loading })
+  axios.get(`${OWM_BASE_URL}/forecast?q=${city}&units=imperial&appid=${OWM_API_KEY}`)
+  .then(res => {
+    const data = res.data;
+    setCurrentState({ kind: PossibleStates.success, data })
+  }).catch(err => {
+    if (err.response) {
+      setCurrentState({ kind: PossibleStates.error, errorObject: err.response })
+      console.log('error in response', err.response);
+    } else if (err.request) {
+      setCurrentState({ kind: PossibleStates.error, errorObject: err.request })
+      console.log('error in request', err.request);
+    } else {
+      console.log('something else went horribly wrong')
+    }
+  })
+}
+
+const ErrorComponent = () => {
+  const refreshPage = ()=>{
+    window.location.reload();
+  }
+  return (
+    <div><p>An error has occurred.</p><button onClick={refreshPage}>Refresh Page</button></div>
+  );
+};
+
 const DisplayWeatherWrapper = () => {
-  const [pageStatus, setStatus] = useState<LoadingStates>(LoadingStatuses.initial);
-  //@ts-ignore
-  const [weatherData, fetchWeatherData] = useState<WeatherComponentProps>({});
+  const [city, setCity] = useState('New York');
+  const [currentState, setCurrentState] = useState<State>({ kind: PossibleStates.initial });
   useEffect(() => {
-    setStatus(LoadingStatuses.loading);
-    axios.get(`${OWM_BASE_URL}/forecast?q=New%20York&units=imperial&appid=${OWM_API_KEY}`)
-      .then(res => {
-        const data = res.data;
-        fetchWeatherData(data)
-        setStatus(LoadingStatuses.success);
-      }).catch(err => {
-        if (err.response) {
-          setStatus(LoadingStatuses.error);
-          console.log('error in response', err.response);
-        } else if (err.request) {
-          setStatus(LoadingStatuses.error);
-          console.log('error in request', err.request);
-        } else {
-          setStatus(LoadingStatuses.error);
-          console.log('something else went horribly wrong')
-        }
-      })
+    get5DayForecast3HRWeatherData(city, setCurrentState);
   }, []);
-  switch (pageStatus) {
-    case LoadingStatuses.success:
-      //@ts-ignore
-      return (<WeatherComponent weatherData={weatherData} />);
-    case LoadingStatuses.initial:
-    case LoadingStatuses.loading:
+  const updateCityForecast = () => {
+    get5DayForecast3HRWeatherData(city, setCurrentState);
+  };
+  switch (currentState.kind) {
+    case PossibleStates.success:
+      return (<WeatherComponent updateCityForecast={updateCityForecast} setCity={setCity} city={city} weatherData={currentState} />);
+    case PossibleStates.initial:
+    case PossibleStates.loading:
       return <div>Loading...</div>;
-    case LoadingStatuses.error:
-      return <div>An error has occurred.</div>;
+    case PossibleStates.error:
+      return <ErrorComponent />;
     default:
-      return assertUnreachable(pageStatus);
+      return assertUnreachable(currentState);
   }
 }
 
