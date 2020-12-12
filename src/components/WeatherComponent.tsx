@@ -11,7 +11,7 @@ type WeatherComponentProps = {
   weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData},
   setCity: Function,
   city: string,
-  updateCityForecast: any,
+  updateCityForecast: () => void,
 }
 
 type WeatherChartComponentProps = {
@@ -25,14 +25,15 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: weatherData.list.map(n => dayjs(n.dt_txt).format('MM/DD/YY h:mm A')),
+        labels: weatherData.list.map(n => dayjs(n.dt_txt).format('h:mm A (MM/DD)')),
         datasets: [
           {
             label: "Temperature (Fahrenheit)",
             data: weatherData.list.map(n => n.main.temp),
             backgroundColor: "#a0c1b9",
             fill: false,
-            borderWidth: 3,
+            borderWidth: 1,
+            borderColor: '#a0c1b9',
           }
         ]
       }
@@ -43,14 +44,25 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
   );
 };
 
+type CityInputFieldProps = {
+  city: string,
+  setCity: Function,
+  updateCityForecast: () => void,
+}
+
+const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldProps) => (
+  <div>
+    <input type='text' value={city} onChange={(x) => setCity(x.target.value)} />
+    <button onClick={updateCityForecast}>Set</button>
+  </div>
+);
+
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
   return (
     <div>
-      <input type='text' value={city} onChange={(x) => setCity(x.target.value)} />
-      <button onClick={updateCityForecast}>Set</button>
+      <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
       <WeatherChartComponent weatherData={weatherData.data} />
-      <h1>{dayjs().format('MM/DD/YY h:mm A')}</h1>
-      <h2>Data:</h2>
+      <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{dayjs().format('MM/DD/YY h:mm A')}</h1>
       <div style={{ margin: '0 1rem', border: '1px solid #70a0af', overflow: 'hidden', height: '200px', position: 'relative', overflowY: 'scroll' }}>
         <code style={{ fontSize: 'small', wordBreak: 'break-word' }}>{JSON.stringify(weatherData)}</code>
       </div>
