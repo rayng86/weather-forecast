@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Chart from 'chart.js';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 type Weather5DayForecast3HRData = {
   list: Array<{ dt: number, dt_txt: string, main: { temp: number } }>,
@@ -25,7 +26,12 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: weatherData.list.map(n => dayjs(n.dt_txt).format('h:mm A (MM/DD)')),
+        labels: weatherData.list.map(n => {
+          dayjs.extend(utc);
+          const a = dayjs.utc(n.dt_txt);
+          return a.local().format('h:mm A (MM/DD)');
+          
+        }),
         datasets: [
           {
             label: "Temperature (Fahrenheit)",
