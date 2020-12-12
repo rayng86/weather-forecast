@@ -46,7 +46,7 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
     });
   });
   return (
-    <canvas id="5DayForecast3HRData" width="400" height="200" />
+    <canvas id="5DayForecast3HRData" width="100%" height="100%" />
   );
 };
 
@@ -65,7 +65,7 @@ const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldPr
 
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
   return (
-    <div>
+    <div style={{ width: '500px' }}>
       <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
       <WeatherChartComponent weatherData={weatherData.data} />
       <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{dayjs().format('MM/DD/YY h:mm A')}</h1>
@@ -124,11 +124,21 @@ const ErrorComponent = () => {
   );
 };
 
+const LoadingComponent = () => (
+  <div>
+    <div className="loading-ring"></div>
+  </div>
+);
+
+const DEFAULT_CONFIG = {
+  city: 'New York',
+};
+
 const DisplayWeatherWrapper = () => {
-  const [city, setCity] = useState('New York');
+  const [city, setCity] = useState(DEFAULT_CONFIG.city);
   const [currentState, setCurrentState] = useState<State>({ kind: PossibleStates.initial });
   useEffect(() => {
-    get5DayForecast3HRWeatherData(city, setCurrentState);
+    get5DayForecast3HRWeatherData(DEFAULT_CONFIG.city, setCurrentState);
   }, []);
   const updateCityForecast = () => {
     get5DayForecast3HRWeatherData(city, setCurrentState);
@@ -138,7 +148,7 @@ const DisplayWeatherWrapper = () => {
       return (<WeatherComponent updateCityForecast={updateCityForecast} setCity={setCity} city={city} weatherData={currentState} />);
     case PossibleStates.initial:
     case PossibleStates.loading:
-      return <div>Loading...</div>;
+      return <LoadingComponent />;
     case PossibleStates.error:
       return <ErrorComponent />;
     default:
