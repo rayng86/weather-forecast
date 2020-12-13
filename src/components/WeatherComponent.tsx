@@ -65,12 +65,17 @@ const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldPr
 
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
   return (
-    <div style={{ width: '500px' }}>
-      <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
-      <WeatherChartComponent weatherData={weatherData.data} />
-      <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{dayjs().format('MM/DD/YY h:mm A')}</h1>
-      <div style={{ margin: '0 1rem', border: '1px solid #70a0af', overflow: 'hidden', height: '200px', position: 'relative', overflowY: 'scroll' }}>
-        <code style={{ fontSize: 'small', wordBreak: 'break-word' }}>{JSON.stringify(weatherData)}</code>
+    <div style={{ display: 'flex' }}>
+      <div>
+        <div className="wforecast-logo">
+          <h1>Weather Forecast</h1>
+          <h5>Web app built with react</h5>
+        </div>
+        <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
+      </div>
+      <div style={{ width: '600px' }}>
+        <WeatherChartComponent weatherData={weatherData.data} />
+        <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{dayjs().format('MM/DD/YY h:mm A')}</h1>
       </div>
     </div>
   );
