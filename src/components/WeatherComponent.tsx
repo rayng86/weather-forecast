@@ -64,6 +64,7 @@ const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldPr
 );
 
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
+  const todayDate = dayjs().format('MM/DD/YY h:mm A');
   return (
     <div style={{ display: 'flex' }}>
       <div>
@@ -76,7 +77,7 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : W
       </div>
       <div style={{ width: '600px' }}>
         <WeatherChartComponent weatherData={weatherData.data} />
-        <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{dayjs().format('MM/DD/YY h:mm A')}</h1>
+        <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
       </div>
     </div>
   );
@@ -136,28 +137,34 @@ const LoadingComponent = () => (
 
 const DEFAULT_CONFIG = {
   city: 'New York',
+  nightHour: 17,
 };
 
 type CurrentWeatherComponentProps = {
   weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: any },
 }
 
-const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps) => (
-  <figure className="current-weather-card">
-    <figcaption>
-      <h3>{weatherData.data2.weather[0].description}</h3>
-      <hr />
-      <h5>Current Temp.</h5>
-      <p>{weatherData.data2.main.temp} &deg;F</p>
-      <h5>Feels Like</h5>
-      <p>{weatherData.data2.main.feels_like} &deg;F</p>
-      <h5>Temp. Low</h5>
-      <p>{weatherData.data2.main.temp_min} &deg;F</p>
-      <h5>Temp. High</h5>
-      <p>{weatherData.data2.main.temp_max} &deg;F</p>
-    </figcaption>
-  </figure>
-)
+const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps) => {
+  const isNightTime = dayjs().hour() <= DEFAULT_CONFIG.nightHour ? '' : '-n';
+  const weatherIcon = weatherData.data2.weather[0].id;
+  return (
+    <figure className="current-weather-card">
+      <figcaption>
+        <i className={`owf owf-5x owf-${weatherIcon}${isNightTime}`}></i>
+        <h3>{weatherData.data2.weather[0].description}</h3>
+        <hr />
+        <h5>Current Temp.</h5>
+        <p>{weatherData.data2.main.temp} &deg;F</p>
+        <h5>Feels Like</h5>
+        <p>{weatherData.data2.main.feels_like} &deg;F</p>
+        <h5>Temp. Low</h5>
+        <p>{weatherData.data2.main.temp_min} &deg;F</p>
+        <h5>Temp. High</h5>
+        <p>{weatherData.data2.main.temp_max} &deg;F</p>
+      </figcaption>
+    </figure>
+  );
+};
 
 const DisplayWeatherWrapper = () => {
   const [city, setCity] = useState(DEFAULT_CONFIG.city);
@@ -179,6 +186,6 @@ const DisplayWeatherWrapper = () => {
     default:
       return assertUnreachable(currentState);
   }
-}
+};
 
 export default DisplayWeatherWrapper;
