@@ -9,7 +9,7 @@ type Weather5DayForecast3HRData = {
 }
 
 type WeatherComponentProps = {
-  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData},
+  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: any },
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
@@ -87,7 +87,7 @@ type State =
 | { kind: PossibleStates.initial, }
 | { kind: PossibleStates.loading, }
 | { kind: PossibleStates.error, errorObject: any }
-| { kind: PossibleStates.success, data: any }
+| { kind: PossibleStates.success, data: any, data2: any }
 
 const OWM_BASE_URL = 'https://api.openweathermap.org/data/2.5/';
 const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
@@ -96,23 +96,21 @@ const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
 // https://dev.to/ddiprose/exhaustive-switch-statement-with-typescript-26dh
 export const assertUnreachable = (x: never) => null;
 
-const get5DayForecast3HRWeatherData = (city: string, setCurrentState: Function) => {
-  setCurrentState({ kind: PossibleStates.loading })
-  axios.get(`${OWM_BASE_URL}/forecast?q=${city}&units=imperial&appid=${OWM_API_KEY}`)
-  .then(res => {
-    const data = res.data;
-    setCurrentState({ kind: PossibleStates.success, data })
-  }).catch(err => {
-    if (err.response) {
-      setCurrentState({ kind: PossibleStates.error, errorObject: err.response })
-      console.log('error in response', err.response);
-    } else if (err.request) {
-      setCurrentState({ kind: PossibleStates.error, errorObject: err.request })
-      console.log('error in request', err.request);
-    } else {
-      console.log('something else went horribly wrong')
-    }
-  })
+const owmAPICallHelperFn = (city: string, setCurrentState: Function) => {
+  setCurrentState({ kind: PossibleStates.loading });
+  const request1 = axios.get(`${OWM_BASE_URL}/forecast?q=${city}&units=imperial&appid=${OWM_API_KEY}`);
+  const request2 = axios.get(`${OWM_BASE_URL}/weather?q=${city}&units=imperial&appid=${OWM_API_KEY}`);
+  const makeAPICalls = async () => {
+    Promise.allSettled([request1, request2]).then((results) => {
+      if ((results[0].status === 'fulfilled' && results[0].value) && (results[1].status === 'fulfilled' && results[1].value)) {
+      const currentWeatherData = results[1].value.data;
+        setCurrentState({ kind: PossibleStates.success, data: results[0].value.data, data2: currentWeatherData })
+      } else if (results[0].status === 'rejected' && results[0].reason) {
+        setCurrentState({ kind: PossibleStates.error, errorObject: results[0].reason.response.data.message });
+      }
+    });
+  };
+  makeAPICalls();
 }
 
 const ErrorComponent = () => {
@@ -138,10 +136,10 @@ const DisplayWeatherWrapper = () => {
   const [city, setCity] = useState(DEFAULT_CONFIG.city);
   const [currentState, setCurrentState] = useState<State>({ kind: PossibleStates.initial });
   useEffect(() => {
-    get5DayForecast3HRWeatherData(DEFAULT_CONFIG.city, setCurrentState);
+    owmAPICallHelperFn(DEFAULT_CONFIG.city, setCurrentState);
   }, []);
   const updateCityForecast = () => {
-    get5DayForecast3HRWeatherData(city, setCurrentState);
+    owmAPICallHelperFn(city, setCurrentState);
   };
   switch (currentState.kind) {
     case PossibleStates.success:
