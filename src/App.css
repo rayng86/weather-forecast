@@ -53,17 +53,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #f4e8c1;
   min-height: 100vh;
@@ -123,4 +112,44 @@ input[type="text"] {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.current-weather-card {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  margin: 10px 0;
+  min-width: 150px;
+  max-width: 280px;
+  width: 100%;
+  background-color: #706993;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.current-weather-card * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.current-weather-card figcaption {
+  padding: 5% 10% 15%;
+}
+
+.current-weather-card h3 {
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 3px 0;
+}
+
+.current-weather-card h5 {
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+  color: #331E38;
+  letter-spacing: 1px;
 }

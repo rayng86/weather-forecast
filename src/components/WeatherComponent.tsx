@@ -72,6 +72,7 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : W
           <h5>Web app built with react</h5>
         </div>
         <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
+        <CurrentWeatherComponent weatherData={weatherData}/>
       </div>
       <div style={{ width: '600px' }}>
         <WeatherChartComponent weatherData={weatherData.data} />
@@ -136,6 +137,27 @@ const LoadingComponent = () => (
 const DEFAULT_CONFIG = {
   city: 'New York',
 };
+
+type CurrentWeatherComponentProps = {
+  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: any },
+}
+
+const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps) => (
+  <figure className="current-weather-card">
+    <figcaption>
+      <h3>{weatherData.data2.weather[0].description}</h3>
+      <hr />
+      <h5>Current Temp.</h5>
+      <p>{weatherData.data2.main.temp} &deg;F</p>
+      <h5>Feels Like</h5>
+      <p>{weatherData.data2.main.feels_like} &deg;F</p>
+      <h5>Temp. Low</h5>
+      <p>{weatherData.data2.main.temp_min} &deg;F</p>
+      <h5>Temp. High</h5>
+      <p>{weatherData.data2.main.temp_max} &deg;F</p>
+    </figcaption>
+  </figure>
+)
 
 const DisplayWeatherWrapper = () => {
   const [city, setCity] = useState(DEFAULT_CONFIG.city);
