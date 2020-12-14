@@ -8,8 +8,22 @@ type Weather5DayForecast3HRData = {
   list: Array<{ dt: number, dt_txt: string, main: { temp: number } }>,
 }
 
+type CurrentWeatherData = {
+  main: {
+    temp: number,
+    feels_like: number,
+    temp_min: number,
+    temp_max: number,
+  },
+  weather: Array<{ id: number, description: string }>,
+}
+
 type WeatherComponentProps = {
-  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: any },
+  weatherData: {
+    kind: PossibleStates.success,
+    data: Weather5DayForecast3HRData,
+    data2: CurrentWeatherData,
+  },
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
@@ -94,7 +108,7 @@ type State =
 | { kind: PossibleStates.initial, }
 | { kind: PossibleStates.loading, }
 | { kind: PossibleStates.error, errorObject: any }
-| { kind: PossibleStates.success, data: any, data2: any }
+| { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData }
 
 const OWM_BASE_URL = 'https://api.openweathermap.org/data/2.5/';
 const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
@@ -141,11 +155,12 @@ const DEFAULT_CONFIG = {
 };
 
 type CurrentWeatherComponentProps = {
-  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: any },
+  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData },
 }
 
 const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps) => {
   const isNightTime = dayjs().hour() <= DEFAULT_CONFIG.nightHour ? '' : '-n';
+  const { temp: currentTemp, feels_like: feelsLike, temp_min: tempMin, temp_max: tempMax } = weatherData.data2.main;
   const weatherIcon = weatherData.data2.weather[0].id;
   return (
     <figure className="current-weather-card">
@@ -154,13 +169,13 @@ const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps)
         <h3>{weatherData.data2.weather[0].description}</h3>
         <hr />
         <h5>Current Temp.</h5>
-        <p>{weatherData.data2.main.temp} &deg;F</p>
+        <p>{currentTemp} &deg;F</p>
         <h5>Feels Like</h5>
-        <p>{weatherData.data2.main.feels_like} &deg;F</p>
+        <p>{feelsLike} &deg;F</p>
         <h5>Temp. Low</h5>
-        <p>{weatherData.data2.main.temp_min} &deg;F</p>
+        <p>{tempMin} &deg;F</p>
         <h5>Temp. High</h5>
-        <p>{weatherData.data2.main.temp_max} &deg;F</p>
+        <p>{tempMax} &deg;F</p>
       </figcaption>
     </figure>
   );
