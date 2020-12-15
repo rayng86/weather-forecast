@@ -38,9 +38,13 @@ export type CityInputFieldProps = {
 export type State =
 | { kind: PossibleStates.initial, }
 | { kind: PossibleStates.loading, }
-| { kind: PossibleStates.error, errorObject: any }
+| { kind: PossibleStates.error, errorStr: string }
 | { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData }
 
 export type CurrentWeatherComponentProps = {
   weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData },
+}
+
+export type ErrorComponentProps = {
+  errorStr: string,
 }

@@ -14,8 +14,10 @@ export const owmAPICallHelperFn = (city: string, setCurrentState: Function) => {
       if ((results[0].status === 'fulfilled' && results[0].value) && (results[1].status === 'fulfilled' && results[1].value)) {
       const currentWeatherData = results[1].value.data;
         setCurrentState({ kind: PossibleStates.success, data: results[0].value.data, data2: currentWeatherData })
-      } else if (results[0].status === 'rejected' && results[0].reason) {
-        setCurrentState({ kind: PossibleStates.error, errorObject: results[0].reason.response.data.message });
+      } else if (results[0].status === 'rejected' && results[0].reason.response) {
+        setCurrentState({ kind: PossibleStates.error, errorStr: results[0].reason.response.data.message });
+      } else {
+        setCurrentState({ kind: PossibleStates.error, errorStr: 'Something went wrong. Please try again later.' });
       }
     });
   };

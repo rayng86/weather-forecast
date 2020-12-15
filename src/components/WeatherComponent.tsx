@@ -50,7 +50,7 @@ const DisplayWeatherWrapper = () => {
     case PossibleStates.loading:
       return <LoadingComponent />;
     case PossibleStates.error:
-      return <ErrorComponent />;
+      return <ErrorComponent errorStr={currentState.errorStr} />;
     default:
       return assertUnreachable(currentState);
   }
