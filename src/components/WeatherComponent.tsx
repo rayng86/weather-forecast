@@ -28,12 +28,12 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : W
           <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
           <CurrentWeatherComponent weatherData={weatherData}/>
         </div>
-        <div style={{ width: '600px' }}>
+        <div style={{ width: '800px' }}>
           <WeatherChartComponent weatherData={weatherData.data} />
+          <ForecastCards weatherData={weatherData} />
           <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
         </div>
       </div>
-      <ForecastCards weatherData={weatherData} />
     </>
   );
 };

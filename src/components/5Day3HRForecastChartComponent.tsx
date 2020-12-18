@@ -20,12 +20,12 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
         }),
         datasets: [
           {
-            label: "Temperature (Fahrenheit)",
+            label: `Temperature ( ${degreeTextSymbol}F )`,
             data: weatherData.list.map(n => n.main.temp),
-            backgroundColor: "#a0c1b9",
+            backgroundColor: "#5A5DA0",
             fill: false,
             borderWidth: 1,
-            borderColor: '#a0c1b9',
+            borderColor: '#5A5DA0',
             yAxisID: 'temperature'
           },
           {
@@ -40,10 +40,10 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
           {
             label: "Humidity",
             data: weatherData.list.map(n => n.main.humidity),
-            backgroundColor: "#5A5DA0",
+            backgroundColor: "#EFAD10",
             fill: false,
             borderWidth: 1,
-            borderColor: '#5A5DA0',
+            borderColor: '#EFAD10',
             yAxisID: 'percent'
           }
         ]
