@@ -50,6 +50,13 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
       },
       options: {
         scales: {
+          xAxes: [{
+            id: 'time-and-date',
+            scaleLabel: {
+              display: true,
+              labelString: 'Time and Date',
+            }
+          }],
           yAxes: [{
             id: 'temperature',
             type: 'linear',
