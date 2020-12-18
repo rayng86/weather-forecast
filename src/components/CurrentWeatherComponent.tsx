@@ -1,10 +1,10 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { DEFAULT_CONFIG } from '../constants';
-import { CurrentWeatherComponentProps } from '../types';
+import { WeatherDataProps } from '../types';
 
-const CurrentWeatherComponent = ({ weatherData } : CurrentWeatherComponentProps) => {
   const isNightTime = dayjs().hour() <= DEFAULT_CONFIG.nightHour ? '' : '-n';
+const CurrentWeatherComponent = ({ weatherData } : WeatherDataProps) => {
   const { temp: currentTemp, feels_like: feelsLike, temp_min: tempMin, temp_max: tempMax } = weatherData.data2.main;
   const weatherIcon = weatherData.data2.weather[0].id;
   return (

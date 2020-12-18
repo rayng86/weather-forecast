@@ -1,15 +1,18 @@
 import { PossibleStates } from './constants'
 
 export type Weather5DayForecast3HRData = {
-  list: Array<{ dt: number, dt_txt: string, main: { temp: number } }>,
+  list: Array<OWMWeatherData>,
 }
 
-export type CurrentWeatherData = {
+export type OWMWeatherData = {
+  dt: number,
+  dt_txt: string,
   main: {
     temp: number,
     feels_like: number,
     temp_min: number,
     temp_max: number,
+    humidity: number,
   },
   weather: Array<{ id: number, description: string }>,
 }
@@ -18,7 +21,7 @@ export type WeatherComponentProps = {
   weatherData: {
     kind: PossibleStates.success,
     data: Weather5DayForecast3HRData,
-    data2: CurrentWeatherData,
+    data2: OWMWeatherData,
   },
   setCity: Function,
   city: string,
@@ -39,10 +42,10 @@ export type State =
 | { kind: PossibleStates.initial, }
 | { kind: PossibleStates.loading, }
 | { kind: PossibleStates.error, errorStr: string }
-| { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData }
+| { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: OWMWeatherData }
 
-export type CurrentWeatherComponentProps = {
-  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: CurrentWeatherData },
+export type WeatherDataProps = {
+  weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: OWMWeatherData },
 }
 
 export type ErrorComponentProps = {
