@@ -51,3 +51,7 @@ export type WeatherDataProps = {
 export type ErrorComponentProps = {
   errorStr: string,
 }
+
+export type ForecastCardProps = {
+  forecastData: OWMWeatherData;
+}

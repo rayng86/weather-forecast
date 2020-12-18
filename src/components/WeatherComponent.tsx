@@ -6,6 +6,7 @@ import WeatherChartComponent from './5Day3HRForecastChartComponent';
 import CurrentWeatherComponent from './CurrentWeatherComponent';
 import { ErrorComponent, LoadingComponent } from './GenericMicroComponents';
 import { assertUnreachable, owmAPICallHelperFn } from '../utils';
+import { ForecastCards } from './5DayForecastCards';
 
 const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldProps) => (
   <div>
@@ -17,20 +18,23 @@ const CityInputField = ({ city, setCity, updateCityForecast } : CityInputFieldPr
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast } : WeatherComponentProps) => {
   const todayDate = dayjs().format('MM/DD/YY h:mm A');
   return (
-    <div style={{ display: 'flex' }}>
-      <div>
-        <div className="wforecast-logo">
-          <h1>Weather Forecast</h1>
-          <h5>Web app built with react</h5>
+    <>
+      <div style={{ display: 'flex' }}>
+        <div>
+          <div className="wforecast-logo">
+            <h1>Weather Forecast</h1>
+            <h5>Web app built with react</h5>
+          </div>
+          <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
+          <CurrentWeatherComponent weatherData={weatherData}/>
         </div>
-        <CityInputField city={city} setCity={setCity} updateCityForecast={updateCityForecast} />
-        <CurrentWeatherComponent weatherData={weatherData}/>
+        <div style={{ width: '600px' }}>
+          <WeatherChartComponent weatherData={weatherData.data} />
+          <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
+        </div>
       </div>
-      <div style={{ width: '600px' }}>
-        <WeatherChartComponent weatherData={weatherData.data} />
-        <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
-      </div>
-    </div>
+      <ForecastCards weatherData={weatherData} />
+    </>
   );
 };
 
