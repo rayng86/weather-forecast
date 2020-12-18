@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { PossibleStates, OWM_BASE_URL, OWM_API_KEY } from './constants';
+import dayjs from 'dayjs';
+import { PossibleStates, OWM_BASE_URL, OWM_API_KEY, DEFAULT_CONFIG } from './constants';
 
 // exhaustive switch statement helper function
 // https://dev.to/ddiprose/exhaustive-switch-statement-with-typescript-26dh
@@ -22,4 +23,6 @@ export const owmAPICallHelperFn = (city: string, setCurrentState: Function) => {
     });
   };
   makeAPICalls();
-}
+};
+
+export const useNightTimeCloudIcon = dayjs().hour() <= DEFAULT_CONFIG.nightHour ? '' : '-n';

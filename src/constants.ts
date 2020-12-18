@@ -12,3 +12,5 @@ export enum PossibleStates {
 
 export const OWM_BASE_URL = 'https://api.openweathermap.org/data/2.5/';
 export const OWM_API_KEY = process.env.REACT_APP_OWM_API_KEY;
+
+export const degreeTextSymbol = '\u00b0';
