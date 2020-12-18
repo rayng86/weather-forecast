@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import Chart from 'chart.js';
 import { WeatherChartComponentProps } from '../types';
+import { degreeTextSymbol } from '../constants';
 
 const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => {
   useEffect(() => {
@@ -25,9 +26,58 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
             fill: false,
             borderWidth: 1,
             borderColor: '#a0c1b9',
+            yAxisID: 'temperature'
+          },
+          {
+            label: "Feels Like",
+            data: weatherData.list.map(n => n.main.feels_like),
+            backgroundColor: "#da917b",
+            fill: false,
+            borderWidth: 1,
+            borderColor: '#da917b',
+            yAxisID: 'temperature'
+          },
+          {
+            label: "Humidity",
+            data: weatherData.list.map(n => n.main.humidity),
+            backgroundColor: "#5A5DA0",
+            fill: false,
+            borderWidth: 1,
+            borderColor: '#5A5DA0',
+            yAxisID: 'percent'
           }
         ]
-      }
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            id: 'temperature',
+            type: 'linear',
+            gridLines: {
+              display: false
+            },
+            scaleLabel: {
+              display: true,
+              labelString: `Temperature ( ${degreeTextSymbol}F )`,
+
+            },
+            ticks: {
+              callback: (tick: number) => Math.round(tick),
+            }
+          }, {
+            id: 'percent',
+            type: 'linear',
+            gridLines: {
+              display: false
+            },
+            position: 'right',
+            scaleLabel: {
+              display: true,
+              labelString: '%',
+            },
+          }]
+        }
+			},
     });
   });
   return (
