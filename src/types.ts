@@ -7,6 +7,7 @@ export type Weather5DayForecast3HRData = {
 export type OWMWeatherData = {
   dt: number,
   dt_txt: string,
+  name: string,
   main: {
     temp: number,
     feels_like: number,

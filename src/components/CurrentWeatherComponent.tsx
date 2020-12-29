@@ -6,9 +6,11 @@ import { useNightTimeCloudIcon } from '../utils';
 const CurrentWeatherComponent = ({ weatherData } : WeatherDataProps) => {
   const { temp: currentTemp, feels_like: feelsLike, temp_min: tempMin, temp_max: tempMax } = weatherData.data2.main;
   const weatherIcon = weatherData.data2.weather[0].id;
+  const { name: locationName } = weatherData.data2;
   return (
     <figure className="current-weather-card">
       <figcaption>
+        <h2>{locationName}</h2>
         <i className={`owf owf-5x owf-${weatherIcon}${useNightTimeCloudIcon}`}></i>
         <h3>{weatherData.data2.weather[0].description}</h3>
         <hr />
