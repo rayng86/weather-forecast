@@ -53,6 +53,7 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
         ]
       },
       options: {
+        events: ['click'],
         scales: {
           xAxes: [{
             id: 'time-and-date',
@@ -90,7 +91,7 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
         }
 			},
     });
-  });
+  }, [measurementType, weatherData]);
   return (
     <canvas id="5DayForecast3HRData" width="100%" height="100%" />
   );
