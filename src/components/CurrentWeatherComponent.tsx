@@ -23,6 +23,10 @@ const CurrentWeatherComponent = ({ weatherData } : WeatherDataProps) => {
         <h5>Temp. High</h5>
         <p>{tempMax}{degreeTextSymbol}</p>
       </figcaption>
+      <figcaption>
+        <p><small>Created by Raymond Ng</small></p>
+        <p><small>Built With: Javascript, React, TypeScript, Chart.js, Web API calls from Open Weather Map API</small></p>
+      </figcaption>
     </figure>
   );
 };
