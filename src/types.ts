@@ -23,7 +23,7 @@ export type WeatherComponentProps = {
     kind: PossibleStates.success,
     data: Weather5DayForecast3HRData,
     data2: OWMWeatherData,
-  },
+  } & MeasurementTypeProps,
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
@@ -31,13 +31,16 @@ export type WeatherComponentProps = {
 
 export type WeatherChartComponentProps = {
   weatherData: Weather5DayForecast3HRData,
+  measurementType: MeasurementTypes,
 }
 
 export type CityInputFieldProps = {
   city: string,
   setCity: Function,
   updateCityForecast: () => void,
-}
+} & MeasurementTypeProps;
+
+export type MeasurementTypes = 'C' | 'F';
 
 export type State =
 | { kind: PossibleStates.initial, }
@@ -49,10 +52,24 @@ export type WeatherDataProps = {
   weatherData: { kind: PossibleStates.success, data: Weather5DayForecast3HRData, data2: OWMWeatherData },
 }
 
+export type MeasurementTypeProps = {
+  setMeasurementType: Function,
+  measurementType: MeasurementTypes,
+}
+
 export type ErrorComponentProps = {
   errorStr: string,
 }
 
 export type ForecastCardProps = {
-  forecastData: OWMWeatherData;
+  forecastData: OWMWeatherData,
+  measurementType: MeasurementTypes,
 }
+
+export type ForecastCardsProps = WeatherDataProps & {
+  measurementType: MeasurementTypes,
+}
+
+export type CurrentWeatherComponentProps = WeatherDataProps & { measurementType: MeasurementTypes };
+
+export type DefaultConfigProps = { city: string, nightHour: number, measurementType: MeasurementTypes };
