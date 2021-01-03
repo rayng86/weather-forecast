@@ -4,24 +4,28 @@ import utc from 'dayjs/plugin/utc';
 import Chart from 'chart.js';
 import { WeatherChartComponentProps } from '../types';
 import { degreeTextSymbol } from '../constants';
+import { calculateByMeasurementType } from '../utils';
 
-const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => {
+const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartComponentProps) => {
   useEffect(() => {
-    const ctx = document.getElementById("5DayForecast3HRData");
-    // @ts-ignore
+    const ctx = document.getElementById("5DayForecast3HRData") as HTMLCanvasElement;
+    const chartLabels = weatherData.list.map(n => {
+      dayjs.extend(utc);
+      const a = dayjs.utc(n.dt_txt);
+      return a.local().format('h:mm A (MM/DD)');
+      
+    });
+    const tempArr: any = weatherData.list.map(n => calculateByMeasurementType(measurementType, n.main.temp, true));
+    const feelsLikeArr: any = weatherData.list.map(n => calculateByMeasurementType(measurementType, n.main.feels_like, true));
+    const humidityArr: any = weatherData.list.map(n => n.main.humidity);
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: weatherData.list.map(n => {
-          dayjs.extend(utc);
-          const a = dayjs.utc(n.dt_txt);
-          return a.local().format('h:mm A (MM/DD)');
-          
-        }),
+        labels: chartLabels,
         datasets: [
           {
-            label: `Temperature ( ${degreeTextSymbol}F )`,
-            data: weatherData.list.map(n => n.main.temp),
+            label: `Temperature (${degreeTextSymbol}${measurementType})`,
+            data: tempArr,
             backgroundColor: "#5A5DA0",
             fill: false,
             borderWidth: 1,
@@ -30,7 +34,7 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
           },
           {
             label: "Feels Like",
-            data: weatherData.list.map(n => n.main.feels_like),
+            data: feelsLikeArr,
             backgroundColor: "#da917b",
             fill: false,
             borderWidth: 1,
@@ -39,7 +43,7 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
           },
           {
             label: "Humidity",
-            data: weatherData.list.map(n => n.main.humidity),
+            data: humidityArr,
             backgroundColor: "#EFAD10",
             fill: false,
             borderWidth: 1,
@@ -65,7 +69,7 @@ const WeatherChartComponent = ({ weatherData } : WeatherChartComponentProps) => 
             },
             scaleLabel: {
               display: true,
-              labelString: `Temperature ( ${degreeTextSymbol}F )`,
+              labelString: `Temperature (${degreeTextSymbol}${measurementType})`,
 
             },
             ticks: {

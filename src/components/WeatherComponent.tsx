@@ -30,7 +30,7 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, meas
           <CurrentWeatherComponent weatherData={weatherData} measurementType={measurementType} />
         </div>
         <div style={{ width: '800px' }}>
-          <WeatherChartComponent weatherData={weatherData.data} />
+          <WeatherChartComponent measurementType={measurementType} weatherData={weatherData.data} />
           <ForecastCards weatherData={weatherData} measurementType={measurementType} />
           <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
         </div>
