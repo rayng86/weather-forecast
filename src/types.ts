@@ -23,11 +23,11 @@ export type WeatherComponentProps = {
     kind: PossibleStates.success,
     data: Weather5DayForecast3HRData,
     data2: OWMWeatherData,
-  } & MeasurementTypeProps,
+  },
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
-}
+} & MeasurementTypeProps;
 
 export type WeatherChartComponentProps = {
   weatherData: Weather5DayForecast3HRData,
