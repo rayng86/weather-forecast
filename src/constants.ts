@@ -1,6 +1,9 @@
-export const DEFAULT_CONFIG = {
+import { DefaultConfigProps } from './types';
+
+export const DEFAULT_CONFIG: DefaultConfigProps = {
   city: 'New York',
   nightHour: 17,
+  measurementType: 'F',
 };
 
 export enum PossibleStates {

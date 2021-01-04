@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { PossibleStates, OWM_BASE_URL, OWM_API_KEY, DEFAULT_CONFIG } from './constants';
+import { PossibleStates, OWM_BASE_URL, OWM_API_KEY, DEFAULT_CONFIG, degreeTextSymbol } from './constants';
 
 // exhaustive switch statement helper function
 // https://dev.to/ddiprose/exhaustive-switch-statement-with-typescript-26dh
@@ -26,3 +26,17 @@ export const owmAPICallHelperFn = (city: string, setCurrentState: Function) => {
 };
 
 export const useNightTimeCloudIcon = dayjs().hour() <= DEFAULT_CONFIG.nightHour ? '' : '-n';
+
+export const calculateByMeasurementType = (measurementType: string, tempF: number, displayTempNumberOnly: boolean = false) => {
+  if (measurementType === 'C') {
+    const tempC = (tempF - 32) * 5/9;
+    if (displayTempNumberOnly) {
+      return tempC;
+    }
+    return `${tempC.toFixed(2)} ${degreeTextSymbol}${measurementType}`;
+  }
+  if (displayTempNumberOnly) {
+    return tempF;
+  }
+  return `${tempF} ${degreeTextSymbol}${measurementType}`;
+};
