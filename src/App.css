@@ -76,13 +76,24 @@
     transform: rotate(360deg);
   }
 }
+button:disabled, button:hover:disabled {
+  background: lightgrey;
+  color: darkslategrey;
+}
+
 button {
-  background: #70A0AF;
+  background: #7187aa;
   color: white;
-  border: 1px solid black;
+  border: 1px solid #7187aa;
   text-transform: uppercase;
   cursor: pointer;
-  padding: 4px 6px;
+  padding: 5px 6px;
+  margin: 0 2px;
+  outline: none;
+}
+
+button:hover {
+  background: #5a5da0;
 }
 
 input[type="text"] {
