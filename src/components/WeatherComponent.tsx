@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 import { DEFAULT_CONFIG, PossibleStates } from '../constants';
 import { CityInputFieldProps, MeasurementTypes, State, WeatherComponentProps } from '../types';
 import WeatherChartComponent from './5Day3HRForecastChartComponent';
@@ -16,9 +15,7 @@ const CityInputField = ({ city, setCity, updateCityForecast, setMeasurementType 
   </div>
 );
 
-const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, measurementType, setMeasurementType } : WeatherComponentProps) => {
-  const todayDate = dayjs().format('MM/DD/YY h:mm A');
-  return (
+const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, measurementType, setMeasurementType } : WeatherComponentProps) => (
     <>
       <div style={{ display: 'flex' }}>
         <div>
@@ -32,12 +29,10 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, meas
         <div style={{ width: '800px' }}>
           <WeatherChartComponent measurementType={measurementType} weatherData={weatherData.data} />
           <ForecastCards weatherData={weatherData} measurementType={measurementType} />
-          <h1 style={{ fontWeight: 200, color: '#70a0af' }}>{todayDate}</h1>
         </div>
       </div>
     </>
-  );
-};
+);
 
 const DisplayWeatherWrapper = () => {
   const [city, setCity] = useState(DEFAULT_CONFIG.city);
