@@ -8,8 +8,8 @@ import { assertUnreachable, owmAPICallHelperFn } from '../utils';
 import { ForecastCards } from './5DayForecastCards';
 
 const CityInputField = ({ city, setCity, updateCityForecast, setMeasurementType } : CityInputFieldProps) => (
-  <div>
-    <input type='text' value={city} onChange={(x) => setCity(x.target.value)} />
+  <div style={{ display: 'flex', clear: 'both', justifyContent: 'space-between', padding: '0 23px' }}>
+    <input id="searchbox" type='text' value={city} onChange={(x) => setCity(x.target.value)} />
     <button onClick={updateCityForecast}>Set</button>
     <button onClick={() => setMeasurementType('F')}>F</button><button onClick={() => setMeasurementType('C')}>C</button>
   </div>
