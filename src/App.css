@@ -1,14 +1,23 @@
+:root {
+  --logo-color: #e9c46a;
+  --bg-color: #264653;
+  --chart-bg-color: #2d5362;
+  --sider-bar-bg: #2a9d8f;
+
+}
+
+
 .wforecast-logo {
   position: relative;
   float: left;
-  color: #70A0AF;
+  color: var(--logo-color);
   overflow: hidden;
   margin: 31px 25px 8px;
   max-width: 280px;
   width: 100%;
   text-align: center;
   font-size: 16px;
-  border-top: 3px solid #70A0AF;
+  border-top: 3px solid var(--logo-color);
   padding-top: 6px;
 }
 .wforecast-logo * {
@@ -38,7 +47,7 @@
   position: absolute;
   height: 3px;
   content: '';
-  background: #70A0AF;
+  background: var(--logo-color);
   width: 1000%;
   top: 50%;
 }
@@ -54,7 +63,7 @@
 }
 
 .App-header {
-  background-color: #f4e8c1;
+  background-color: var(--bg-color);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -94,6 +103,7 @@ button {
 
 button:hover {
   background: #5a5da0;
+  border: 1px solid #5a5da0;
 }
 
 input[type="text"] {
@@ -133,7 +143,7 @@ input[type="text"] {
   min-width: 150px;
   max-width: 280px;
   width: 100%;
-  background-color: #706993;
+  background-color: var(--sider-bar-bg);
   color: #fff;
   text-align: center;
   font-size: 16px;

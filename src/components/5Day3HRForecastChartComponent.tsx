@@ -41,11 +41,11 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
           {
             label: `Temperature (${degreeTextSymbol}${measurementType})`,
             data: tempArr,
-            backgroundColor: "#5A5DA0",
+            backgroundColor: "#69C9C9",
             fill: false,
             borderWidth: 1,
-            borderColor: '#5A5DA0',
-            yAxisID: 'temperature'
+            borderColor: '#69C9C9',
+            yAxisID: 'temperature',
           },
           {
             label: "Feels Like",
@@ -68,6 +68,12 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
         ]
       },
       options: {
+        legend: {
+          display: true,
+          labels: {
+              fontColor: 'white',
+          }
+        },
         events: ['click'],
         scales: {
           xAxes: [{
@@ -75,7 +81,14 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
             scaleLabel: {
               display: true,
               labelString: 'Time and Date',
-            }
+              fontColor: '#81B2C5',
+            },
+            gridLines: {
+              color: '#3A6B7E',
+            },
+            ticks: {
+              fontColor: '#81B2C5',
+            },
           }],
           yAxes: [{
             id: 'temperature',
@@ -86,10 +99,11 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
             scaleLabel: {
               display: true,
               labelString: `Temperature (${degreeTextSymbol}${measurementType})`,
-
+              fontColor: '#81B2C5',
             },
             ticks: {
               callback: (tick: number) => Math.round(tick),
+              fontColor: '#81B2C5',
             }
           }, {
             id: 'percent',
@@ -101,6 +115,10 @@ const WeatherChartComponent = ({ weatherData, measurementType } : WeatherChartCo
             scaleLabel: {
               display: true,
               labelString: '%',
+              fontColor: '#81B2C5',
+            },
+            ticks: {
+              fontColor: '#81B2C5',
             },
           }]
         }
