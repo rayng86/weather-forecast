@@ -9,7 +9,7 @@ import { ForecastCards } from './5DayForecastCards';
 
 const CityInputField = ({ city, setCity, updateCityForecast, setMeasurementType } : CityInputFieldProps) => (
   <div style={{ display: 'flex', clear: 'both', justifyContent: 'space-between', padding: '0 23px' }}>
-    <input id="searchbox" type='text' value={city} onChange={(x) => setCity(x.target.value)} />
+    <input id="searchbox" type='text' value={city} onClick={() => setCity('')} onChange={(x) => setCity(x.target.value)} />
     <button title="Set" onClick={updateCityForecast}>Set</button>
     <button title="Switch to Fahrenheit" onClick={() => setMeasurementType('F')}>F</button>
     <button title="Switch to Celsius" onClick={() => setMeasurementType('C')}>C</button>

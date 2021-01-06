@@ -20,7 +20,7 @@ export const ForecastCards = ({ weatherData, measurementType } : ForecastCardsPr
   return (
     <>
       <h2 style={{ color: '#88b1b4'}}>Next 5-Day Forecast</h2>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '40px' }}>
         {daily5DayForecast.map((forecastData: OWMWeatherData, index: number) => <ForecastCard key={index} forecastData={forecastData} measurementType={measurementType}  />)}
       </div>
     </>
