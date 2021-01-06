@@ -47,7 +47,16 @@ const DisplayWeatherWrapper = () => {
   };
   switch (currentState.kind) {
     case PossibleStates.success:
-      return (<WeatherComponent measurementType={measurementType} setMeasurementType={setMeasurementType} updateCityForecast={updateCityForecast} setCity={setCity} city={city} weatherData={currentState} />);
+      return (
+        <WeatherComponent
+          measurementType={measurementType}
+          setMeasurementType={setMeasurementType}
+          updateCityForecast={updateCityForecast}
+          setCity={setCity}
+          city={city}
+          weatherData={currentState}
+        />
+      );
     case PossibleStates.initial:
     case PossibleStates.loading:
       return <LoadingComponent />;
