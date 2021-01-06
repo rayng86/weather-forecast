@@ -4,6 +4,7 @@ export const DEFAULT_CONFIG: DefaultConfigProps = {
   city: 'New York',
   nightHour: 17,
   measurementType: 'F',
+  geoLocation: [undefined, undefined],
 };
 
 export enum PossibleStates {
