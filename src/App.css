@@ -4,6 +4,7 @@
   --chart-bg-color: #2d5362;
   --sider-bar-bg: #2a9d8f;
   --main-button: 231, 110, 80;
+  --text-link: #69c9c9;
 
 }
 
@@ -75,7 +76,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--text-link);
 }
 
 @keyframes App-logo-spin {
@@ -121,6 +122,10 @@ input#searchbox[type="text"] {
   width: 80px;
   height: 80px;
 }
+.loading-ring.mini {
+  width: initial;
+  height: initial;
+}
 .loading-ring:after {
   content: " ";
   display: block;
@@ -129,6 +134,14 @@ input#searchbox[type="text"] {
   margin: 8px;
   border-radius: 50%;
   border: 6px solid #70A0AF;
+  border-color: #70A0AF transparent #70A0AF transparent;
+  animation: loading-ring 1.2s linear infinite;
+}
+.loading-ring.mini:after {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #70A0AF;
   border-color: #70A0AF transparent #70A0AF transparent;
   animation: loading-ring 1.2s linear infinite;
 }
@@ -179,4 +192,15 @@ input#searchbox[type="text"] {
   text-transform: uppercase;
   color: #15514A;
   letter-spacing: 1px;
+}
+
+button.text-button {
+  background: none;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+}
+
+button.text-button:hover {
+  color: var(--text-link);
 }

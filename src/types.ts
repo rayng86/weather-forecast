@@ -27,6 +27,9 @@ export type WeatherComponentProps = {
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
+  useGeolocation: () => void,
+  showGeoLoadingSpinner: boolean,
+  geoErrorMsg: string,
 } & MeasurementTypeProps;
 
 export type WeatherChartComponentProps = {
