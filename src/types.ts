@@ -27,10 +27,7 @@ export type WeatherComponentProps = {
   setCity: Function,
   city: string,
   updateCityForecast: () => void,
-  useGeolocation: () => void,
-  showGeoLoadingSpinner: boolean,
-  geoErrorMsg: string,
-} & MeasurementTypeProps;
+} & MeasurementTypeProps & CurrentLocationComponentProps;
 
 export type WeatherChartComponentProps = {
   weatherData: Weather5DayForecast3HRData,
@@ -81,3 +78,9 @@ export type DefaultConfigProps = {
   measurementType: MeasurementTypes,
   geoLocation: Array<number | undefined>
 };
+
+export type CurrentLocationComponentProps = {
+  showGeoLoadingSpinner: boolean,
+  useGeolocation: () => void,
+  geoErrorMsg: string,
+}

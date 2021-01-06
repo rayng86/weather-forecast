@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DEFAULT_CONFIG, PossibleStates } from '../constants';
-import { CityInputFieldProps, MeasurementTypes, State, WeatherComponentProps } from '../types';
+import { CityInputFieldProps, CurrentLocationComponentProps, MeasurementTypes, State, WeatherComponentProps } from '../types';
 import WeatherChartComponent from './5Day3HRForecastChartComponent';
 import CurrentWeatherComponent from './CurrentWeatherComponent';
 import { ErrorComponent, LoadingComponent } from './GenericMicroComponents';
@@ -16,7 +16,21 @@ const CityInputField = ({ city, setCity, updateCityForecast, setMeasurementType 
   </div>
 );
 
-
+const CurrentLocationComponent = ({ showGeoLoadingSpinner, useGeolocation, geoErrorMsg } : CurrentLocationComponentProps) => (
+  <>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ fontSize: '12px', color: 'white', padding: '8px 0px 8px 16px', textAlign: 'left' }}>
+      <button className="text-button" onClick={useGeolocation}>Or Use Current Location</button>
+      </div>
+      {showGeoLoadingSpinner && <div className="loading-ring mini"></div>}
+    </div>
+    {geoErrorMsg && (
+      <small style={{ color: 'red', fontSize: '10px', display: 'block', textAlign: 'left', padding: '0px 23px', maxWidth: '200px', marginBottom: '10px' }}>
+        {geoErrorMsg}
+      </small>
+    )}
+  </>
+)
 const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, measurementType, setMeasurementType, useGeolocation, showGeoLoadingSpinner, geoErrorMsg } : WeatherComponentProps) => (
     <>
       <div style={{ display: 'flex' }}>
@@ -32,13 +46,7 @@ const WeatherComponent = ({ weatherData, city, setCity, updateCityForecast, meas
             measurementType={measurementType}
             setMeasurementType={setMeasurementType}
             />
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ fontSize: '12px', color: 'white', padding: '8px 0px 8px 16px', textAlign: 'left' }}>
-            <button className="text-button" onClick={useGeolocation}>Or Use Current Location</button>
-          </div>
-          {showGeoLoadingSpinner && <div className="loading-ring mini"></div>}
-          </div>
-          {geoErrorMsg && <small style={{ color: 'red', fontSize: '10px', display: 'block', textAlign: 'left', padding: '0px 23px', maxWidth: '200px', marginBottom: '10px' }}>{geoErrorMsg}</small>}
+          <CurrentLocationComponent showGeoLoadingSpinner={showGeoLoadingSpinner} useGeolocation={useGeolocation} geoErrorMsg={geoErrorMsg} />
           <CurrentWeatherComponent weatherData={weatherData} measurementType={measurementType} />
         </div>
         <div style={{ width: '800px' }}>
@@ -64,7 +72,7 @@ const DisplayWeatherWrapper = () => {
   const useGeolocation = () => {
     if ('geolocation' in navigator) {
       setGeoLoadingSpinnerStatus(true);
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(position => {
         setCity('Current Location');
         setGeoLoadingSpinnerStatus(false);
         setGeoErrorMsg('');
