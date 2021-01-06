@@ -6,7 +6,7 @@ export const ErrorComponent = ({ errorStr } : ErrorComponentProps) => {
     window.location.reload();
   }
   return (
-    <div><p>{errorStr} </p><button onClick={refreshPage}>Refresh Page</button></div>
+    <div style={{ color: 'white' }}><p>{errorStr} </p><button onClick={refreshPage}>Refresh Page</button></div>
   );
 };
 
